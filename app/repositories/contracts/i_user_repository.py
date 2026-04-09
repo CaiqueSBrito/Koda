@@ -1,15 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic, List, Optional, Type
+from typing import Optional
 from app.repositories.contracts.i_base_repository import IBaseRepository
-from pydantic import BaseModel
+from app.models.user import User
+from app.schemas.user_schemas import UserCreate, UserUpdate
 
-ModelType    = TypeVar("ModelType", bound=BaseModel)
-CreateType   = TypeVar("CreateType", bound=BaseModel)
-UpdateType   = TypeVar("UpdateType", bound=BaseModel)
-
-@abstractmethod
-class IUserRepository(ABC, IBaseRepository):
-   
+class IUserRepository(IBaseRepository[User, UserCreate, UserUpdate], ABC):
     @abstractmethod
-    def get_by_number(self, number: str) -> Optional[ModelType]:
+    def get_by_number(self, number: str) -> Optional[User]:
         pass

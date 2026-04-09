@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic, List, Optional, Type
+from typing import TypeVar, Generic, List, Optional
 from pydantic import BaseModel
 
-ModelType = TypeVar("ModelType", bound=BaseModel)
+ModelType = TypeVar("ModelType")
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
