@@ -1,12 +1,10 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
-from sqlalchemy.sql import func
+from sqlalchemy import Column, Integer, String, Boolean
 from app.core.database import Base
+from app.models.timestamp import TimestampMixin
 
-class Services(Base):
+class Services(Base, TimestampMixin):
     __tablename__ = "services"
 
-    id          = Column(Integer, primary_key=True, index=True)
-    name        = Column(String(40), nullable=False)
-    duration    = Column(Integer, nullable=False)
-    created_at  = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at  = Column(DateTime(timezone=True), onupdate=func.now())
+    name      = Column(String(40), nullable=False)
+    duration  = Column(Integer, nullable=False)
+    avaliable = Column(Boolean, default=True, nullable=False)

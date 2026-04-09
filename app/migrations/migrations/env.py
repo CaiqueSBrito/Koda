@@ -9,7 +9,8 @@ from alembic import context
 from app.core.database import Base
 from app.core.config import settings
 # Importe seus modelos para que o Alembic "veja" as tabelas
-from app.models.user import User 
+from app.models.user import User
+from app.models.services import Services
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
