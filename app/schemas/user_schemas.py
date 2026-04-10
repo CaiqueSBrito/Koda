@@ -9,6 +9,18 @@ class UserBase(BaseModel):
 ''
 # Dados para criação (POST)
 class UserCreate(UserBase):
+
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, v):
+        if len(v) < 8:
+            raise ValueError("Senha deve ter no mínimo 8 caracteres")
+        if not any(c.isupper() for c in v):
+            raise ValueError("Senha deve conter ao menos uma letra maiúscula")
+        if not any(c.isdigit() for c in v):
+            raise ValueError("Senha deve conter ao menos um número")
+        return v
+        
     pass
 
 # Dados para atualização parcial (PUT)

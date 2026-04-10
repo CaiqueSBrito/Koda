@@ -1,8 +1,8 @@
-"""criar tabelas iniciais
+"""add email and password to user
 
-Revision ID: edb2bf32321c
+Revision ID: ee2b3241ad6e
 Revises: 
-Create Date: 2026-04-09 13:29:32.038620
+Create Date: 2026-04-09 18:17:22.784390
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'edb2bf32321c'
+revision: str = 'ee2b3241ad6e'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,20 +24,24 @@ def upgrade() -> None:
     op.create_table('services',
     sa.Column('name', sa.String(length=40), nullable=False),
     sa.Column('duration', sa.Integer(), nullable=False),
-    sa.Column('avaliable', sa.Boolean(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_services_id'), 'services', ['id'], unique=False)
     op.create_table('users',
-    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('username', sa.String(length=100), nullable=False),
+    sa.Column('email', sa.String(length=100), nullable=False),
+    sa.Column('password', sa.String(length=255), nullable=False),
     sa.Column('number', sa.String(length=15), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.Column('updated_at', sa.DateTime(), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email'),
     sa.UniqueConstraint('number')
     )
     op.create_index(op.f('ix_users_id'), 'users', ['id'], unique=False)

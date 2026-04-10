@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
 from app.routes import user_router
+from app.routes import services_router
 
 Base.metadata.create_all(bind=engine)  # cria tabelas se não existirem
 
@@ -11,3 +12,4 @@ app = FastAPI(
 )
 
 app.include_router(user_router.router, prefix="/users", tags=["users"])
+app.include_router(services_router.router, prefix="/services", tags=["services"])

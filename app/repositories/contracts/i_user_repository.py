@@ -8,3 +8,7 @@ class IUserRepository(IBaseRepository[User, UserCreate, UserUpdate], ABC):
     @abstractmethod
     def get_by_number(self, number: str) -> Optional[User]:
         pass
+
+    @abstractmethod
+    def get_by_email(self, email: str) -> Optional[User]:
+        pass
