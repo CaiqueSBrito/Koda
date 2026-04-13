@@ -7,4 +7,3 @@ class Services(Base, TimestampMixin):
 
     name      = Column(String(40), nullable=False)
     duration  = Column(Integer, nullable=False)
-    avaliable = Column(Boolean, default=True, nullable=False)

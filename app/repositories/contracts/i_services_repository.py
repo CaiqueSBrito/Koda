@@ -7,7 +7,4 @@ from app.schemas.services_schemas import ServicesCreate, ServicesUpdate
 
 @abstractmethod
 class IServiceRepository(IBaseRepository[Services, ServicesCreate, ServicesUpdate], ABC):
-
-    @abstractmethod
-    def get_avaliable(self, avaliable: bool = True) -> List[Services]:
-        pass
+    pass

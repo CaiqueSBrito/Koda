@@ -1,13 +1,15 @@
 from typing import TypeVar, Generic, List, Type
 from fastapi import HTTPException, status
 from pydantic import BaseModel
+from sqlalchemy.exc import IntegrityError
 from app.repositories.base.base_repository import BaseRepository
+from app.services.contracts.i_base_service import IBaseService
 
 ModelType = TypeVar("ModelType")
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
-class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
+class BaseService(IBaseService[ModelType, CreateSchemaType, UpdateSchemaType]):
     def __init__(self, repo: BaseRepository[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.repo = repo
 
@@ -24,7 +26,13 @@ class BaseService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return obj
 
     def create(self, data: CreateSchemaType) -> ModelType:
-        return self.repo.create(data)
+        try:
+            return self.repo.create(data)
+        except IntegrityError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Registro com {data} já existe"
+            )
 
     def update(self, model_id: int, data: UpdateSchemaType) -> ModelType:
         db_obj = self.get_by_id(model_id) 
