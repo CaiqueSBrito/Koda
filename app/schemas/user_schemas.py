@@ -4,12 +4,13 @@ from typing import Optional
 
 # Base compartilhada entre schemas
 class UserBase(BaseModel):
-    name: str = Field(..., min_length=2, max_length=100)
+    username: str = Field(..., min_length=2, max_length=100)
     email: EmailStr
+    number: str = Field(..., min_length=11, max_length=11)
 ''
 # Dados para criação (POST)
 class UserCreate(UserBase):
-
+    password: str
     @field_validator("password")
     @classmethod
     def validate_password(cls, v):
@@ -25,9 +26,8 @@ class UserCreate(UserBase):
 
 # Dados para atualização parcial (PUT)
 class UserUpdate(BaseModel):
-    name: Optional[str] = Field(None, min_length=2, max_length=100)
+    username: Optional[str] = Field(None, min_length=2, max_length=100)
     email: Optional[EmailStr] = None
-    is_active: Optional[bool] = None
 
 # Resposta da API (GET/POST/PUT)
 class UserResponse(UserBase):

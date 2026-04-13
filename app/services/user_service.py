@@ -4,6 +4,7 @@ from app.schemas.user_schemas import UserCreate, UserUpdate
 from app.models.user import User
 from app.services.base.base_service import BaseService
 from app.services.contracts.i_user_service import IUserService
+from app.security.security import hash_password
 
 class UserService(BaseService[User, UserCreate, UserUpdate], IUserService):
     def __init__(self, repo: UserRepository):
@@ -11,6 +12,7 @@ class UserService(BaseService[User, UserCreate, UserUpdate], IUserService):
         self.repo = repo
 
     def create(self, data: UserCreate) -> User:
+        data.password = hash_password(data.password)
         if self.repo.get_by_email(data.email):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,

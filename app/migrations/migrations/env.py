@@ -5,6 +5,11 @@ from sqlalchemy import pool
 
 from alembic import context
 
+import os
+import sys
+# Adiciona a raiz do projeto ao PYTHONPATH para o Alembic achar a pasta "app"
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
+
 # Importe o seu Base e o settings
 from app.core.database import Base
 from app.core.config import settings
